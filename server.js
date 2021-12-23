@@ -3,10 +3,10 @@ require('dotenv').config();
 const { API_KEY, BASE } = process.env;
 
 const base = new Airtable({ apiKey: API_KEY}).base(BASE);
-const MAPS = 'Maps'
+const MAPS = 'Maps';
 
 // Retrieve all the records in this database
-base('Maps')
+base(MAPS)
     .select({})
     .eachPage((records, next) => {
         console.log('////////////// START: All Records //////////////');
@@ -50,7 +50,7 @@ base(MAPS)
 
 
 // Filter by formula - using filterByFormula property to get items with the name of Mountains
-base('Maps')
+base(MAPS)
     .select({ filterByFormula: "({Name} = 'Mountains')"})
     .eachPage((records, next) => {
         console.log('////////////// FILTER BY FORMULA START: Name //////////////');
@@ -61,7 +61,7 @@ base('Maps')
 
 
 // Filter by formula - using filterByFormula property to get items with a price above 10
-base('Maps')
+base(MAPS)
     .select({ filterByFormula: "({Price} > '10')"})
     .eachPage((records, next) => {
         console.log('////////////// FILTER BY FORMULA START: Price > 10 //////////////');
@@ -70,3 +70,30 @@ base('Maps')
     })
     .catch(err => console.log(err));
 
+
+// Retrieve all the records in this database and order based on view in the table
+base(MAPS)
+    .select({ view: 'Grid view'})
+    .eachPage((records, next) => {
+        console.log('////////////// START: View - Grid View //////////////');
+        records.forEach(record => console.log(record.fields));
+        console.log('////////////// END: View - Grid View //////////////');
+        next();
+    })
+    .catch(err => console.log(err));
+
+
+// Create a new record
+base(MAPS).create([
+    {
+      "fields": {
+        "Name": "Valley",
+        "Priority": "Low",
+        "Status": "Done",
+        "Start Date": "2021-12-05",
+        "Deadline": "2021-12-25",
+        "Cost": 2,
+        "Price": 6
+      }
+    }
+]);
