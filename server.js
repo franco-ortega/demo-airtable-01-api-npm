@@ -9,7 +9,9 @@ const MAPS = 'Maps'
 base('Maps')
     .select({})
     .eachPage((records, next) => {
+        console.log('////////////// START: All Records //////////////');
         records.forEach(record => console.log(record.fields));
+        console.log('////////////// END: All Records //////////////');
         next();
     })
     .catch(err => console.log(err));
@@ -19,7 +21,9 @@ base('Maps')
 base(MAPS)
     .select( { fields: ['Name'], sort: [{ field: 'Name', direction: "asc"}] })
     .eachPage((records, next) => {
+        console.log('////////////// START: Name - Mountains //////////////');
         records.forEach(record => console.log(record.fields));
+        console.log('////////////// END: Name //////////////');
     })
     .catch(err => console.log(err));
 
@@ -43,3 +47,26 @@ base(MAPS)
         records.forEach(record => console.log(record.fields));
         console.log('************** SORT END **************');
     })    .catch(err => console.log(err));
+
+
+// Filter by formula - using filterByFormula property to get items with the name of Mountains
+base('Maps')
+    .select({ filterByFormula: "({Name} = 'Mountains')"})
+    .eachPage((records, next) => {
+        console.log('////////////// FILTER BY FORMULA START: Name //////////////');
+        records.forEach(record => console.log(record.fields));
+        next();
+    })
+    .catch(err => console.log(err));
+
+
+// Filter by formula - using filterByFormula property to get items with a price above 10
+base('Maps')
+    .select({ filterByFormula: "({Price} > '10')"})
+    .eachPage((records, next) => {
+        console.log('////////////// FILTER BY FORMULA START: Price > 10 //////////////');
+        records.forEach(record => console.log(record.fields));
+        next();
+    })
+    .catch(err => console.log(err));
+
