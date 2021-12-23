@@ -8,79 +8,86 @@ const MAPS = 'Maps';
 // Retrieve all the records in this database
 base(MAPS)
     .select({})
-    .eachPage((records, next) => {
+    .eachPage(function page(records, fetchNextPage) {
         console.log('////////////// START: All Records //////////////');
         records.forEach(record => console.log(record.fields));
-        console.log('////////////// END: All Records //////////////');
-        next();
-    })
-    .catch(err => console.log(err));
+        fetchNextPage();
+    }, function done(err) {
+        if (err) { console.error(err); return; }
+    });
 
 
 // Retrieve only the Name column - using fields property
 base(MAPS)
     .select( { fields: ['Name'], sort: [{ field: 'Name', direction: "asc"}] })
-    .eachPage((records, next) => {
+    .eachPage(function page(records, fetchNextPage) {
         console.log('////////////// START: Name - Mountains //////////////');
         records.forEach(record => console.log(record.fields));
-        console.log('////////////// END: Name //////////////');
-    })
-    .catch(err => console.log(err));
+        fetchNextPage();
+    }, function done(err) {
+        if (err) { console.error(err); return; }
+    });
 
 
 // Sort by Name - using sort property
 base(MAPS)
     .select( { sort: [{ field: 'Name', direction: "asc"}] })
-    .eachPage((records, next) => {
+    .eachPage(function page(records, fetchNextPage) {
         console.log('////////////// SORT START: Name //////////////');
         records.forEach(record => console.log(record.fields));
-        console.log('************** SORT END **************');
-    })
-    .catch(err => console.log(err));
+        fetchNextPage();
+    }, function done(err) {
+        if (err) { console.error(err); return; }
+    });
 
 
 // Sort by Start Date - using sort property
 base(MAPS)
     .select( { sort: [{ field: 'Start Date', direction: "desc"}] })
-    .eachPage((records, next) => {
+    .eachPage(function page(records, fetchNextPage) {
         console.log('////////////// SORT START: Start Date //////////////');
         records.forEach(record => console.log(record.fields));
-        console.log('************** SORT END **************');
-    })    .catch(err => console.log(err));
+        fetchNextPage();
+    }, function done(err) {
+        if (err) { console.error(err); return; }
+    });
 
 
 // Filter by formula - using filterByFormula property to get items with the name of Mountains
 base(MAPS)
     .select({ filterByFormula: "({Name} = 'Mountains')"})
-    .eachPage((records, next) => {
+    .eachPage(function page(records, fetchNextPage) {
         console.log('////////////// FILTER BY FORMULA START: Name //////////////');
         records.forEach(record => console.log(record.fields));
-        next();
-    })
-    .catch(err => console.log(err));
+        fetchNextPage();
+    }, function done(err) {
+        if (err) { console.error(err); return; }
+    });
 
 
 // Filter by formula - using filterByFormula property to get items with a price above 10
 base(MAPS)
     .select({ filterByFormula: "({Price} > '10')"})
-    .eachPage((records, next) => {
+    .eachPage(function page(records, fetchNextPage) {
         console.log('////////////// FILTER BY FORMULA START: Price > 10 //////////////');
         records.forEach(record => console.log(record.fields));
-        next();
-    })
-    .catch(err => console.log(err));
+        fetchNextPage();
+    }, function done(err) {
+        if (err) { console.error(err); return; }
+    });
 
 
 // Retrieve all the records in this database and order based on view in the table
 base(MAPS)
     .select({ view: 'Grid view'})
-    .eachPage((records, next) => {
+    .eachPage(function page(records, fetchNextPage) {
         console.log('////////////// START: View - Grid View //////////////');
         records.forEach(record => console.log(record.fields));
         console.log('////////////// END: View - Grid View //////////////');
-        next();
-    })
-    .catch(err => console.log(err));
+        fetchNextPage();
+    }, function done(err) {
+        if (err) { console.error(err); return; }
+    });
 
 
 // Create a new record
@@ -111,16 +118,16 @@ base(MAPS).create([
 // Retrieve IDs
 base(MAPS)
     .select({})
-    .eachPage((records, next) => {
+    .eachPage(function page(records, fetchNextPage) {
         console.log('////////////// START: IDs //////////////');
         records.forEach(record => {
             console.log(record.fields)
             console.log(record.getId())
         });
-        console.log('////////////// END: IDs //////////////');
-        next();
-    })
-    .catch(err => console.log(err));
+        fetchNextPage();
+    }, function done(err) {
+        if (err) { console.error(err); return; }
+    });
 
 
 // Update a record
@@ -143,7 +150,24 @@ base(MAPS).update([
       return;
     }
     records.forEach(function(record) {
-      console.log('Start Date of update record');
+      console.log('Start Date of updated record');
       console.log(record.get('Start Date'));
     });
 });
+
+
+// Retrieve name and ID
+base(MAPS)
+    .select({})
+    .eachPage(function page(records, fetchNextPage) {
+        console.log('////////////// START: ID and Name //////////////');
+        records.forEach(record => {
+            console.log({
+                id: record.getId(),
+                name: record.fields.Name
+            })
+        });
+        fetchNextPage();
+    }, function done(err) {
+        if (err) { console.error(err); return; }
+    });
