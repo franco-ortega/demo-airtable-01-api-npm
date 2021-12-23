@@ -96,4 +96,54 @@ base(MAPS).create([
         "Price": 6
       }
     }
-]);
+], function(err, records) {
+    if (err) {
+        console.error(err);
+        return;
+    }
+    records.forEach(function (record) {
+        console.log('ID:')
+        console.log(record.getId());
+    });
+});
+
+
+// Retrieve IDs
+base(MAPS)
+    .select({})
+    .eachPage((records, next) => {
+        console.log('////////////// START: IDs //////////////');
+        records.forEach(record => {
+            console.log(record.fields)
+            console.log(record.getId())
+        });
+        console.log('////////////// END: IDs //////////////');
+        next();
+    })
+    .catch(err => console.log(err));
+
+
+// Update a record
+base(MAPS).update([
+    {
+      "id": "recJAth6qoCcZIUXU",
+      "fields": {
+        "Name": "Mountains",
+        "Priority": "High",
+        "Status": "Done",
+        "Start Date": "2021-12-15",
+        "Deadline": "2021-12-18",
+        "Cost": 15,
+        "Price": 38
+      }
+    }
+], function(err, records) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    records.forEach(function(record) {
+      console.log('Start Date of update record');
+      console.log(record.get('Start Date'));
+    });
+});
