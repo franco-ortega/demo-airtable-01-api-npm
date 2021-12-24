@@ -2,7 +2,7 @@
   "name": "demo-airtable-01-api-npm",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "airtable": "^0.11.1"
+    "airtable": "^0.11.1",
+    "dotenv": "^10.0.0"
   }
 }
