@@ -1,5 +1,5 @@
-const Airtable = require('airtable');
 require('dotenv').config();
+const Airtable = require('airtable');
 const { API_KEY, BASE } = process.env;
 
 const base = new Airtable({ apiKey: API_KEY}).base(BASE);
@@ -130,7 +130,8 @@ base(MAPS)
     });
 
 
-// Update a record
+// Update a record with update
+// NOTE: updating a record with replace will perform a desctructive update that clears all unspecified cell values
 base(MAPS).update([
     {
       "id": "recJAth6qoCcZIUXU",
